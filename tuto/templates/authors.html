@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='auteurs.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1 class="title">Liste des auteurs</h1>
+    <table class="author-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ author.name }}</td>
+                <td>
+                    <a class="btn-edit" href="{{ url_for('edit_author', id=author.id) }}">Modifier</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Bouton pour ajouter un auteur mais que si l'utilisateur est connecté -->
+    {% if current_user.is_authenticated %}
+        <a class="btn-add" href="{{ url_for('add_author') }}">Ajouter un auteur</a>
+    {% endif %}
+
+    <!-- Bouton de retour -->
+    <a class="btn-home" href="{{ url_for('home') }}">Retour</a>
+{% endblock %}

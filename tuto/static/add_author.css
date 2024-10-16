@@ -1,0 +1,48 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+form input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+form button {
+    padding: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+form button:active {
+    background-color: #004b9a;
+}
+
+form button:focus {
+    outline: none;
+}
+
+form button:disabled {
+    background-color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+form button:disabled:hover {
+    background-color: #b3b3b3;
+}
+

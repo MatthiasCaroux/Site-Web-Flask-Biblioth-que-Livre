@@ -1,0 +1,72 @@
+/* Style général pour la page de connexion */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Style pour le conteneur du formulaire */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Style pour le formulaire */
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Style pour les labels */
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Style pour les champs de saisie */
+form .form-control {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style pour le bouton de soumission */
+form .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+form .btn:hover {
+    background-color: #0056b3;
+}
+
+form .btn:active {
+    background-color: #004b9a;
+}
+
+form .btn:focus {
+    outline: none;
+}
+
+form .btn:disabled {
+    background-color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+form .btn:disabled:hover {
+    background-color: #b3b3b3;
+}

@@ -1,0 +1,31 @@
+h1 {
+    text-decoration: underline;
+}
+
+div.sample {
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+div.sample img {
+    margin: 10px;
+}
+
+main {
+    margin-top: 8em;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+main > .container {
+    padding: 60px 15px 0;
+}
+
+#nav-username{
+    color: white;
+}
