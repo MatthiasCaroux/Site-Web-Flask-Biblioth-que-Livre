@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Confirmation de suppression</h1>
+    <p>Êtes-vous sûr de vouloir supprimer l'auteur : <strong>{{ author.name }}</strong> ?</p>
+
+    <form action="{{ url_for('confirm_delete_author', id=author.id) }}" method="POST">
+        <button type="submit" class="btn btn-danger">Confirmer</button>
+        <a href="{{ url_for('authors') }}" class="btn btn-secondary">Annuler</a>
+    </form>
+{% endblock %}

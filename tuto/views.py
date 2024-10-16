@@ -11,6 +11,9 @@ from flask import request
 
 from .commands import newuser
 
+from flask import flash
+
+
 
 @app.route("/")
 def home():
@@ -29,6 +32,32 @@ def edit_author(id):
     a = get_author(id)
     f = AuthorForm(id=a.id, name=a.name)
     return render_template("edit-author.html", author=a, form=f)
+
+
+@app.route("/delete/author/<int:id>", methods=("POST",))
+def confirm_delete_author(id):
+    a = Author.query.get(id)
+    if a:
+        db.session.delete(a)
+        db.session.commit()
+        flash("Auteur supprimé avec succès.", "success")
+    else:
+        flash("Auteur non trouvé.", "error")
+    return redirect(url_for('authors'))
+
+
+
+@app.route("/delete/author/<int:id>/confirm", methods=["GET"])
+def delete_author_confirm(id):
+    author = Author.query.get(id)
+    if not author:
+        flash("Auteur non trouvé.", "error")
+        return redirect(url_for('authors'))
+
+    return render_template("delete_author_confirm.html", author=author)
+
+
+
 
 
 @app.route("/save/author/", methods =("POST" ,))

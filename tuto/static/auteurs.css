@@ -70,6 +70,21 @@ body {
     background-color: #27ae60;
 }
 
+/* Style pour les boutons Supprimer */
+.btn-delete {
+    display: inline-block;
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
 /* Style pour le bouton de retour */
 .btn-home {
     display: inline-block;

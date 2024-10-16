@@ -22,7 +22,8 @@
                 <td>{{ author.name }}</td>
                 <td>
                     <a class="btn-edit" href="{{ url_for('edit_author', id=author.id) }}">Modifier</a>
-                </td>
+                    <a class="btn-delete" href="{{ url_for('delete_author_confirm', id=author.id) }}">Supprimer</a>
+                </td>                
             </tr>
             {% endfor %}
         </tbody>
