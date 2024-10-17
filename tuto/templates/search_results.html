@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <form method="GET" action="{{ url_for('search_books') }}">
+        <input type="text" name="query" placeholder="Rechercher un livre">
+        <button type="submit">Rechercher</button>
+    </form>
+    <div class="sample">
+        <h2>Résultats de recherche</h2>
+        {% if books %}
+            <div class="book-grid">
+                {% for book in books %}
+                    <div class="book-item">
+                        <a href="{{ url_for('detail', id=book.id) }}">
+                            <img src="{{ url_for('static', filename='images/' + book.img) }}" alt="{{ book.title }}" title="{{ book.title }}">
+                        </a>
+                        <p>{{ book.title }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun livre trouvé pour "{{ request.args.get('query') }}".</p>
+        {% endif %}
+    </div>
+{% endblock %}

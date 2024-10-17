@@ -1,6 +1,6 @@
 from .app import *
 from flask import render_template
-from .models import get_sample, get_author, get_book, AuthorForm
+from .models import Book, get_sample, get_author, get_book, AuthorForm
 
 from flask import url_for , redirect
 from .app import db
@@ -205,3 +205,16 @@ def add_favorite(book_id):
         current_user.favorite_books.remove(book)
         db.session.commit()
     return redirect(url_for('detail', id=book_id))  # Redirige vers la page de détail du livre
+
+
+# Pour la partie recherche
+
+@app.route("/search", methods=["GET"])
+@app.route('/search', methods=['GET'])
+def search_books():
+    query = request.args.get('query')
+    if query:
+        results = Book.query.filter(Book.title.contains(query)).all()  # Remplace Book par ton modèle de livres
+    else:
+        results = []
+    return render_template('search_results.html', books=results)
