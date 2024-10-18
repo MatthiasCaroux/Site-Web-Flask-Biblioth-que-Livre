@@ -109,25 +109,6 @@ class LoginForm(FlaskForm):
         m.update(self.password.data.encode())
         passwd = m.hexdigest()
         return user if user.password == passwd else None
-    
-
-class RegistrationForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password',)
-    confirm_password = PasswordField('Confirm Password',)
-
-    def validate(self, extra_validators=None):
-        # Appel de la méthode validate de la classe parente avec extra_validators
-        if not super(RegistrationForm, self).validate(extra_validators=extra_validators):
-            return False
-        # Vérifie si les mots de passe correspondent
-        if self.password.data != self.confirm_password.data:
-            self.confirm_password.errors.append("Passwords must match")
-            return False
-        newuser(self.username.data, self.password.data)
-        return True
-
-
 
 
 
@@ -162,13 +143,14 @@ def logout ():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
+    form = RegisterForm()
+    if form.validate():
         print("le formulaire est validé")
         user = User(username=form.username.data, password=form.password.data)
+        user.crypt_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        return redirect(home)  # Rediriger après l'inscription réussie
+        return redirect(url_for('login'))  # Rediriger après l'inscription réussie
     else : 
         print("probleme pour valider le formulaire de register")
     return render_template('register.html', form=form)
@@ -222,7 +204,7 @@ def search_books():
 
 # Pour la partie creation d'un nouveau livre
 
-from .models import BookForm
+from .models import BookForm, RegisterForm
 
 # Chemin vers le dossier 'tuto' où se trouvent tes fichiers Flask
 tuto_path = os.path.dirname(os.path.abspath(__file__))

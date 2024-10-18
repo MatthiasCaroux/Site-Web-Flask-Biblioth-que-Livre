@@ -2,7 +2,7 @@
 
 {% block styles %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur</label>
                 {{ form.username(class="form-control", id="username") }}
-                {% if form.username.errors %}
+                {% if form.is_submitted() and form.username.errors %}
                     <div class="alert alert-danger mt-2">
                         {% for error in form.username.errors %}
                             <span>{{ error }}</span><br>
@@ -27,7 +27,7 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
                 {{ form.password(class="form-control", id="password") }}
-                {% if form.password.errors %}
+                {% if form.is_submitted() and form.password.errors %}
                     <div class="alert alert-danger mt-2">
                         {% for error in form.password.errors %}
                             <span>{{ error }}</span><br>
@@ -39,13 +39,14 @@
             <div class="mb-3">
                 <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
                 {{ form.confirm_password(class="form-control", id="confirm_password") }}
-                {% if form.confirm_password.errors %}
+                {% if form.is_submitted() and form.confirm_password.errors %}
                     <div class="alert alert-danger mt-2">
                         {% for error in form.confirm_password.errors %}
                             <span>{{ error }}</span><br>
                         {% endfor %}
                     </div>
                 {% endif %}
+            </div> <!-- J'ai ajouté la fermeture de la div ici -->
 
             <button type="submit" class="btn btn-primary">S'inscrire</button>
         </form>

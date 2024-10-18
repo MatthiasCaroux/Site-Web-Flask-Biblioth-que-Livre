@@ -1,3 +1,4 @@
+from hashlib import sha256
 from .app import db, login_manager
 from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField, SelectField
@@ -54,8 +55,17 @@ class User(db.Model, UserMixin):  # Utilisation de UserMixin pour simplifier
     # Relation Many-to-Many avec la table 'favorites'
     favorite_books = db.relationship('Book', secondary=favorites, backref=db.backref('favorited_by', lazy='dynamic'))
 
+    def __init__(self, username, password):
+        self.username = username
+        self.crypt_password(password)
+
     def get_id(self):
         return self.username
+    
+    def crypt_password(self, password):
+        m = sha256()
+        m.update(password.encode())
+        self.password = m.hexdigest()
 
 
 @login_manager.user_loader
@@ -74,3 +84,17 @@ class BookForm(FlaskForm):
 
     def __repr__(self):
         return "<Book (%d) %s>" % (self.id, self.title)
+    
+
+class RegisterForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired()])
+    confirm_password = StringField('Confirm Password', validators=[DataRequired()])
+    
+    def validate(self):
+        if not super(RegisterForm, self).validate():
+            return False
+        if self.password.data != self.confirm_password.data:
+            self.confirm_password.errors.append("Passwords must match")
+            return False
+        return True
