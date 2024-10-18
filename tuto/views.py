@@ -12,6 +12,7 @@ from flask import request
 from .commands import newuser
 
 from flask import flash
+from werkzeug.utils import secure_filename
 
 
 
@@ -169,7 +170,7 @@ def register():
         db.session.commit()
         return redirect(home)  # Rediriger après l'inscription réussie
     else : 
-        print("oulalala")
+        print("probleme pour valider le formulaire de register")
     return render_template('register.html', form=form)
 
 
@@ -209,7 +210,6 @@ def add_favorite(book_id):
 
 # Pour la partie recherche
 
-@app.route("/search", methods=["GET"])
 @app.route('/search', methods=['GET'])
 def search_books():
     query = request.args.get('query')
@@ -218,3 +218,63 @@ def search_books():
     else:
         results = []
     return render_template('search_results.html', books=results)
+
+
+# Pour la partie creation d'un nouveau livre
+
+from .models import BookForm
+
+# Chemin vers le dossier 'tuto' où se trouvent tes fichiers Flask
+tuto_path = os.path.dirname(os.path.abspath(__file__))
+# Définir le dossier de téléchargement
+UPLOAD_FOLDER = os.path.join(tuto_path, 'static', 'images')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# S'assurer que le dossier de téléchargement existe
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/add_book", methods=["GET", "POST"])
+@login_required
+def add_book():
+    form = BookForm()
+    form.author.choices = [(author.id, author.name) for author in Author.query.all()]
+
+    if form.validate_on_submit():
+        # Gérer l'upload de l'image
+        if 'img' not in request.files:
+            flash('Aucun fichier sélectionné', 'error')
+            return redirect(request.url)
+
+        file = request.files['img']
+        if file.filename == '':
+            flash('Pas de fichier sélectionné', 'error')
+            return redirect(request.url)
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            img_url = os.path.join("", filename)
+
+            # Créer un nouveau livre avec l'image
+            book = Book(title=form.title.data, 
+                        price=form.price.data, 
+                        url=form.url.data, 
+                        img=img_url,
+                        author_id=form.author.data)
+
+            db.session.add(book)
+            db.session.commit()
+            flash('Livre ajouté avec succès', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Format de fichier non supporté', 'error')
+
+    else:
+        if form.errors:
+            flash('Erreur de validation du formulaire', 'error')
+
+    return render_template("add_book.html", form=form)
