@@ -7,25 +7,27 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <form method="GET" action="{{ url_for('search_books') }}">
-        <input type="text" name="query" placeholder="Rechercher un livre">
-        <button type="submit">Rechercher</button>
-    </form>
-    <div class="sample">
-        <h2>Résultats de recherche</h2>
+    
+    <div class="search-container">
+        <form method="GET" action="{{ url_for('search_books') }}">
+            <input type="text" name="query" class="search-input" placeholder="Rechercher un livre...">
+            <button type="submit" class="search-button">Rechercher</button>
+        </form>
+    </div>
+
+    <h2>Résultats de recherche</h2>
+    <div class="book-list">
         {% if books %}
-            <div class="book-grid">
-                {% for book in books %}
-                    <div class="book-item">
-                        <a href="{{ url_for('detail', id=book.id) }}">
-                            <img src="{{ url_for('static', filename='images/' + book.img) }}" alt="{{ book.title }}" title="{{ book.title }}">
-                        </a>
-                        <p>{{ book.title }}</p>
-                    </div>
-                {% endfor %}
-            </div>
+            {% for book in books %}
+                <div class="book-item">
+                    <a href="{{ url_for('detail', id=book.id) }}">
+                        <img src="{{ url_for('static', filename='images/' + book.img) }}" alt="{{ book.title }}" title="{{ book.title }}" class="book-image">
+                    </a>
+                    <p class="book-title">{{ book.title }}</p>
+                </div>
+            {% endfor %}
         {% else %}
-            <p>Aucun livre trouvé pour "{{ request.args.get('query') }}".</p>
+            <p class="no-results">Aucun livre trouvé pour "{{ request.args.get('query') }}".</p>
         {% endif %}
     </div>
 {% endblock %}

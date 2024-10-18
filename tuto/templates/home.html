@@ -7,16 +7,23 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <form method="GET" action="{{ url_for('search_books') }}">
-        <input type="text" name="query" placeholder="Rechercher un livre">
-        <button type="submit">Rechercher</button>
-    </form>
-    <div class="sample">
+    
+    <div class="spacer"></div>
+    <div class="search-container">
+        <form method="GET" action="{{ url_for('search_books') }}">
+            <input type="text" name="query" class="search-input" placeholder="Rechercher un livre...">
+            <button type="submit" class="search-button">Rechercher</button>
+        </form>
+    </div>
+
+    <div class="book-list">
         {% for x in books %}
-        <!-- endroit ou estgérer les images des livres -->
-            <a href="{{ url_for('detail', id=x.id) }}">
-                <img src="{{ url_for('static', filename='images/' + x.img) }}" alt="{{ x.title }}" title="{{ x.title }}">
-            </a>
+            <div class="book-item">
+                <a href="{{ url_for('detail', id=x.id) }}">
+                    <img src="{{ url_for('static', filename='images/' + x.img) }}" alt="{{ x.title }}" title="{{ x.title }}" class="book-image">
+                </a>
+                <p class="book-title">{{ x.title }}</p>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

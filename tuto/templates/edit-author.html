@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block styles %}
@@ -11,24 +10,24 @@
 <h1>Edit author: {{ author.name }}</h1>
 <form role="form" method="POST" action="{{ url_for('save_author') }}">
     {{ form.hidden_tag() }}
-<div class=
-    {% if form.name.errors %}
-        "form-group has-error"
-    {% else %}
-        "form-group"
-    {% endif %}
+    <div class=
+        {% if form.name.errors %}
+            "form-group has-error"
+        {% else %}
+            "form-group"
+        {% endif %}
     >
-    {{ form.name.label }} {{ form.name(size = 50, class_ ="form-control") }}
-</div>
-{% if form.name.errors %}
-<ul class="list-group">
-    {% for error in form.name.errors %}
-    <li class="list-group-item">{{ error }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-<input class="btn btn-default" type="submit" value="Enregistrer"> 
-<button class="btn btn-default" type="button" onclick="window.location.href='{{ url_for('home') }}';">Retour</button>
+        {{ form.name.label }} {{ form.name(size=50, class_="form-control") }}
+    </div>
+    {% if form.name.errors %}
+    <ul class="list-group">
+        {% for error in form.name.errors %}
+        <li class="list-group-item">{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <input class="btn btn-default" type="submit" value="Enregistrer"> 
+    <button class="btn btn-default" type="button" onclick="window.location.href='{{ url_for('home') }}';">Retour</button>
 </form>
 
 {% endblock %}
