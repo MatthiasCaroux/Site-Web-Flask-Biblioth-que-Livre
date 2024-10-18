@@ -64,6 +64,24 @@
     font-style: italic;
 }
 
-.spacer {
-    height: 50px; /* Ajuste la valeur selon l'espacement souhaité */
+.search-container {
+    padding-top: 50px; /* Ajuste la valeur selon l'espacement souhaité */
+}
+/* Bouton Ajouter un livre */
+.btn-add-book {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-add-book:hover {
+    background-color: #218838;
+    transform: scale(1.05);
 }

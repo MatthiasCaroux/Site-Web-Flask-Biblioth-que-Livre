@@ -1,6 +1,6 @@
 from .app import db, login_manager
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField
+from wtforms import StringField, HiddenField, SelectField
 from wtforms.validators import DataRequired
 from flask_login import UserMixin
 
@@ -61,3 +61,16 @@ class User(db.Model, UserMixin):  # Utilisation de UserMixin pour simplifier
 @login_manager.user_loader
 def load_user(username):
     return User.query.get(username)
+
+
+class BookForm(FlaskForm):    
+    id = HiddenField('id')
+    price = StringField('Prix', validators=[DataRequired()])
+    title = StringField('Titre', validators=[DataRequired()])
+    url = StringField('URL', validators=[DataRequired()])
+    img = StringField('Image', validators=[DataRequired()])
+    author = SelectField('Auteur', coerce=int)  # SelectField avec coerce=int pour gérer les IDs d'auteurs
+
+
+    def __repr__(self):
+        return "<Book (%d) %s>" % (self.id, self.title)
