@@ -1,0 +1,18 @@
+
+.container{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+main {
+    min-height: 100vh; /* 200px correspond à la hauteur estimée du header et du footer */
+    padding: 20px;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding-top: 1rem 0;
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+}

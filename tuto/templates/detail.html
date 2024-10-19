@@ -18,9 +18,9 @@
             <div id="bouton-acheter">
                 <button type="button" class="w-100 btn btn-lg btn-primary" onclick="window.location.href='{{ book.url }}';">Acheter</button>
             </div>
-            <div id="bouton-modifier">
+            <!-- <div id="bouton-modifier">
                 <button type="button" class="w-100 btn btn-lg btn-secondary" onclick="window.location.href='{{ url_for('edit_author', id=book.id) }}';">Modifier</button>
-            </div>
+            </div> -->
 
             {% if book.user_ratings %}
                 <p>Note moyenne : {{ (book.user_ratings|map(attribute='rating')|sum) / book.user_ratings|length }}</p>
