@@ -1,5 +1,6 @@
 from hashlib import sha256
 from .app import db, login_manager
+from sqlalchemy.orm import relationship
 from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField, SelectField
 from wtforms.validators import DataRequired
@@ -27,9 +28,23 @@ class Book(db.Model):
     img = db.Column(db.String(100))
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     author = db.relationship('Author', backref=db.backref('books', lazy='dynamic'))
+    user_ratings = db.relationship('UserBookRating', back_populates='book')
 
     def __repr__(self):
         return "<Book (%d) %s>" % (self.id, self.title)
+    
+    
+
+class UserBookRating(db.Model):
+    __tablename__ = 'user_book_rating'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(80), db.ForeignKey('user.username'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+
+    user = db.relationship("User", back_populates="book_ratings")
+    book = db.relationship("Book", back_populates="user_ratings")
+
 
 
 class AuthorForm(FlaskForm):
@@ -51,6 +66,7 @@ def get_author(id):
 class User(db.Model, UserMixin):  # Utilisation de UserMixin pour simplifier
     username = db.Column(db.String(80), primary_key=True)
     password = db.Column(db.String(80))
+    book_ratings = db.relationship('UserBookRating', back_populates='user')
 
     # Relation Many-to-Many avec la table 'favorites'
     favorite_books = db.relationship('Book', secondary=favorites, backref=db.backref('favorited_by', lazy='dynamic'))
@@ -66,6 +82,7 @@ class User(db.Model, UserMixin):  # Utilisation de UserMixin pour simplifier
         m = sha256()
         m.update(password.encode())
         self.password = m.hexdigest()
+
 
 
 @login_manager.user_loader
@@ -98,3 +115,27 @@ class RegisterForm(FlaskForm):
             self.confirm_password.errors.append("Passwords must match")
             return False
         return True
+    
+
+class Notation(db.Model):
+    __tablename__ = 'notation'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(80), db.ForeignKey('user.username'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    note = db.Column(db.Integer)
+
+    #Relations
+    user = db.relationship('User', backref=db.backref('notations', lazy='dynamic'))
+    book = db.relationship('Book', backref=db.backref('notations', lazy='dynamic'))
+
+    def __repr__(self):
+        return "<Notation (%d) %s>" % (self.id, self.note)
+    
+class NotationForm(FlaskForm):
+    id = HiddenField('id')
+    note = StringField('Note', validators=[DataRequired()])
+    book = SelectField('Livre', coerce=int)
+    
+    def __repr__(self):
+        return "<Notation (%d) %s>" % (self.id, self.note)

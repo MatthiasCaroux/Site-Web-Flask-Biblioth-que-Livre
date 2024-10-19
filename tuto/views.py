@@ -1,6 +1,6 @@
 from .app import *
 from flask import render_template
-from .models import Book, get_sample, get_author, get_book, AuthorForm
+from .models import Book, get_sample, get_author, get_book, AuthorForm, UserBookRating
 
 from flask import url_for , redirect
 from .app import db
@@ -21,11 +21,31 @@ def home():
     return render_template("home.html", title="My Books !", books=get_sample(), bootstrap=bootstrap)
 
 
-@app.route("/detail/<id>")
+@app.route("/detail/<int:id>", methods=["GET", "POST"])
+@login_required
 def detail(id):
-    books = get_sample()
-    book = books[int(id)-1]
-    return render_template("detail.html",book=book)
+    book = Book.query.get_or_404(id)
+
+    # Gestion du formulaire pour ajouter/modifier une note
+    if request.method == 'POST' and 'rating' in request.form:
+        rating = int(request.form['rating'])
+        existing_rating = UserBookRating.query.filter_by(user_id=current_user.username, book_id=id).first()
+        if existing_rating:
+            existing_rating.rating = rating  # Mettre à jour la note existante
+        else:
+            new_rating = UserBookRating(user_id=current_user.username, book_id=id, rating=rating)
+            db.session.add(new_rating)
+        db.session.commit()
+        flash('Votre note a été enregistrée', 'success')
+        return redirect(url_for('detail', id=id))
+
+    # Récupérer la note actuelle de l'utilisateur (s'il en a une)
+    existing_rating = UserBookRating.query.filter_by(user_id=current_user.username, book_id=id).first()
+    user_rating = existing_rating.rating if existing_rating else None
+
+    return render_template("detail.html", book=book, user_rating=user_rating)
+
+
 
 
 @app.route("/edit/author/<int:id>")
