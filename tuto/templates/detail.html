@@ -22,6 +22,19 @@
                 <button type="button" class="w-100 btn btn-lg btn-secondary" onclick="window.location.href='{{ url_for('edit_author', id=book.id) }}';">Modifier</button>
             </div>
 
+            {% if book.user_ratings %}
+                <p>Note moyenne : {{ (book.user_ratings|map(attribute='rating')|sum) / book.user_ratings|length }}</p>
+            {% else %}
+                <p>Aucune note pour ce livre.</p>
+            {% endif %}
+
+            <!-- Formulaire pour noter le livre -->
+            <form method="POST">
+                <label for="rating">Note (1-5):</label>
+                <input type="number" name="rating" id="rating" min="1" max="5" required>
+                <button type="submit">Noter</button>
+            </form>
+
             <!-- Formulaire pour ajouter ou retirer des favoris -->
             <form method="POST" action="{{ url_for('add_favorite', book_id=book.id) }}">
                 {% if book in current_user.favorite_books %}
