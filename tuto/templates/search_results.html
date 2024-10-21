@@ -6,9 +6,16 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Mes Favoris</h1>
+    <h1>{{ title }}</h1>
+    
+    <div class="search-container">
+        <form method="GET" action="{{ url_for('search_books') }}">
+            <input type="text" name="query" class="search-input" placeholder="Rechercher un livre...">
+            <button type="submit" class="search-button">Rechercher</button>
+        </form>
+    </div>
 
-    <h2>Livres en favoris</h2>
+    <h2>Résultats de recherche</h2>
     <div class="book-list">
         {% if books %}
             {% for book in books %}
@@ -20,7 +27,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p class="no-results">Aucun livre en favoris.</p>
+            <p class="no-results">Aucun livre trouvé pour "{{ request.args.get('query') }}".</p>
         {% endif %}
     </div>
 {% endblock %}

@@ -1,0 +1,106 @@
+/* Style général pour la page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 500px;
+    width: 100%;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+}
+
+/* Titre de la page */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+/* Style des labels */
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+/* Style des champs de formulaire */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background-color: #f7f7f7;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Bouton de soumission */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Liens sous le formulaire */
+p a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+p a:hover {
+    color: #0056b3;
+}
+
+/* Style des messages d'erreur */
+.alert {
+    padding: 10px;
+    color: white;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    background-color: #dc3545;
+}
+
+/* Style pour les messages en dessous */
+.mt-3 {
+    margin-top: 20px;
+}
+
+/* Style pour l'espacement entre les éléments du formulaire */
+.mb-3 {
+    margin-bottom: 20px;
+}

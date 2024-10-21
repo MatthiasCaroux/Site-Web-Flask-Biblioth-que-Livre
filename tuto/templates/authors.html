@@ -7,6 +7,12 @@
 
 {% block content %}
     <h1 class="title">Liste des auteurs</h1>
+
+    <!-- Bouton pour ajouter un auteur mais que si l'utilisateur est connecté -->
+    {% if current_user.is_authenticated %}
+        <a class="btn-add" href="{{ url_for('add_author') }}">Ajouter un auteur</a>
+    {% endif %}
+    
     <table class="author-table">
         <thead>
             <tr>
@@ -28,11 +34,6 @@
             {% endfor %}
         </tbody>
     </table>
-    
-    <!-- Bouton pour ajouter un auteur mais que si l'utilisateur est connecté -->
-    {% if current_user.is_authenticated %}
-        <a class="btn-add" href="{{ url_for('add_author') }}">Ajouter un auteur</a>
-    {% endif %}
 
     <!-- Bouton de retour -->
     <a class="btn-home" href="{{ url_for('home') }}">Retour</a>
